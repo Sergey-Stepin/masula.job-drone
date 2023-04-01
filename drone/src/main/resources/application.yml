@@ -7,3 +7,13 @@ spring:
       dialect: org.hibernate.dialect.PostgreSQLDialect
       ddl-auto: update
     show-sql: true
+  datasource:
+    driverClassName: org.h2.Driver
+    url: jdbc:h2:mem:drone_database;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS liquibase\;CREATE SCHEMA IF NOT EXISTS drone_db\;SET SCHEMA drone_db
+    username: sa
+    password:
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    liquibase-schema: liquibase
+    default-schema: income_taxes_db
+    contexts: schema,setup
