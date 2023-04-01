@@ -9,5 +9,4 @@ public interface DroneService {
 
     Drone register(Drone drone);
 
-
 }
