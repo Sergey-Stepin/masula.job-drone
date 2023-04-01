@@ -97,12 +97,11 @@ class RegistrationTest {
 
 
         DroneDto requestDto = DroneDto.toDto(drone);
-        MvcResult mvcResult = mockMvc.perform(post("/register")
+        mockMvc.perform(post("/register")
                         .contentType("application/json")
                         .content(mapper.writeValueAsString(requestDto)))
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string(containsString("serialNumber")))
                 .andReturn();
-
     }
 }

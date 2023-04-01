@@ -3,17 +3,23 @@ package services.stepin.example.drone.model;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.Getter;
 import lombok.Setter;
+import services.stepin.example.drone.service.exception.InvalidMedicineException;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Embeddable
 @Getter
 @Setter
 public class Medication {
 
-    @Pattern(regexp = "[\\d\\w\\-\\_]*")
+    private final static Pattern NAME_PATTERN = Pattern.compile("[\\w|\\d|\\-|\\_]+");
+    private final static Pattern CODE_PATTERN = Pattern.compile("[A-Z|\\d||\\_]+");
+
+    @NotNull
     private String name;
 
     @NotNull
@@ -21,7 +27,6 @@ public class Medication {
     private int weightGram;
 
     @NotNull
-    @Pattern(regexp = "[A-Z|\\_|\\d]*")
     private String code;
 
     @Lob
@@ -35,5 +40,20 @@ public class Medication {
                 ", code='" + code + '\'' +
                 ", image_length='" + (image != null ? image.length : 0) + '\'' +
                 '}';
+    }
+
+    public static void validate(Medication medication){
+        System.out.println("### " + medication);
+
+        Matcher nameMatcher = NAME_PATTERN.matcher(medication.name);
+        if(! nameMatcher.matches()){
+            throw new InvalidMedicineException(" Name does not match the pattern: " + NAME_PATTERN);
+        }
+
+        Matcher codeMatcher = CODE_PATTERN.matcher(medication.code);
+        if(! codeMatcher.matches()){
+            throw new InvalidMedicineException(" Code does not match the pattern: " + CODE_PATTERN);
+        }
+
     }
 }

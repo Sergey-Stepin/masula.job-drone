@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.model.Drone.Model;
 import services.stepin.example.drone.model.Drone.State;
+import services.stepin.example.drone.model.Load;
 
 @Data
 @Builder
@@ -26,6 +27,8 @@ public class DroneDto {
 
     private String state;
 
+    private LoadDto loadDto;
+
     public static Drone fromDto(DroneDto dto){
 
         Drone drone = new Drone();
@@ -35,6 +38,10 @@ public class DroneDto {
         drone.setSerialNumber(dto.serialNumber);
         drone.setWeightLimitGram(dto.weightLimitGram);
         drone.setBatteryLevel(dto.batteryLevel);
+
+        LoadDto loadDto = dto.loadDto;
+        Load load = LoadDto.fromDto(loadDto);
+        drone.setLoad(load);
 
         return drone;
     }
