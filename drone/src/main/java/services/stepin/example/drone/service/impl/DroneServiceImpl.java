@@ -9,7 +9,6 @@ import services.stepin.example.drone.repository.LoadRepository;
 import services.stepin.example.drone.service.DroneService;
 import services.stepin.example.drone.repository.DroneRepository;
 import services.stepin.example.drone.service.exception.DroneNotFoundException;
-import services.stepin.example.drone.service.exception.InvalidLoadException;
 
 import java.util.List;
 import java.util.Optional;
@@ -74,6 +73,13 @@ public class DroneServiceImpl implements DroneService {
     @Override
     public List<Drone> findALl() {
         return  droneRepository.findAll();
+    }
+
+    @Override
+    public void updateBatteryLevel(long droneId, int batteryLevel) {
+        Drone foundDrone = findById(droneId);
+        foundDrone.setBatteryLevel(batteryLevel);
+        droneRepository.save(foundDrone);
     }
 
     private void validateLoad(Load load){

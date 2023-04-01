@@ -75,7 +75,7 @@ public class LoadInvalidMedicineTest {
         medications.add(medication1);
         load.setMedications(medications);
 
-        MvcResult mvcResult = load(load);
+        load(load);
     }
 
     @Test
@@ -91,7 +91,7 @@ public class LoadInvalidMedicineTest {
         medications.add(medication1);
         load.setMedications(medications);
 
-        MvcResult mvcResult = load(load);
+        load(load);
     }
 
     private MvcResult load(Load load) throws Exception {

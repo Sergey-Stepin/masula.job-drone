@@ -1,3 +1,5 @@
+drones-monitor-rate-in-milliseconds: 5000
+
 spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect

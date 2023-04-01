@@ -19,6 +19,7 @@ public interface DroneService {
 
     Drone findById(long droneId);
 
-    List<Drone> findALl();  
+    List<Drone> findALl();
 
+    void updateBatteryLevel(long droneId, int batteryLevel);
 }

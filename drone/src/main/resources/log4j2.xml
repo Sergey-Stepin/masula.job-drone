@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="info" name="Drone" packages="services.stepin.example.drone">
+
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        </Console>        
+        <RollingFile name="RollingFile" fileName="logs/drone-monitor.log"
+                     filePattern="logs/drone-monitor.%d{MM-dd-yyyy}_%i.log">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- <OnStartupTriggeringPolicy /> -->
+                <TimeBasedTriggeringPolicy />
+                <SizeBasedTriggeringPolicy size="250 MB"/>
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <!--
+            <AppenderRef ref="RollingFile"/>
+            -->
+
+        </Root>
+        <logger name="services.stepin.example.drone.service.impl.DroneMonitorImpl" level="info" additivity="false">
+            <AppenderRef ref="RollingFile"/>
+        </logger>
+    </Loggers>
+</Configuration>
