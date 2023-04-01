@@ -26,7 +26,7 @@ class RegistrationTest {
 
     @Autowired
     private DroneService droneService;
-    
+
     @Autowired
     private DroneRepository droneRepository;
 
@@ -38,7 +38,6 @@ class RegistrationTest {
         loadRepository.deleteAll();
         droneRepository.deleteAll();
     }
-
 
     @Test
     void givenDrone_shouldRegister(){
