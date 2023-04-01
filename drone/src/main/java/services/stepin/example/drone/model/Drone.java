@@ -34,7 +34,7 @@ public class Drone {
 
     @NotNull
     @Max(100)
-    @Positive
+    @PositiveOrZero
     private int batteryLevel = 100;
 
     @NotNull

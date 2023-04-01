@@ -1,6 +1,7 @@
 package services.stepin.example.drone.service.impl;
 
 
+import jakarta.validation.ValidationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -65,9 +66,10 @@ class RegistrationTest {
         drone.setWeightLimitGram(1);
         drone.setBatteryLevel(101);
 
-        assertThrows(
-                Exception.class,
+        ValidationException ex = assertThrows(
+                ValidationException.class,
                 () -> droneService.register(drone));
+        assertTrue(ex.getMessage().contains("batteryLevel"), " Exception does not mention <batteryLevel>");
     }
 
     @Test
@@ -79,9 +81,10 @@ class RegistrationTest {
         drone.setWeightLimitGram(1);
         drone.setBatteryLevel(-1);
 
-        assertThrows(
-                Exception.class,
+        ValidationException ex = assertThrows(
+                ValidationException.class,
                 () -> droneService.register(drone));
+        assertTrue(ex.getMessage().contains("batteryLevel"), " Exception does not mention <batteryLevel>");
     }
 
     @Test
@@ -94,9 +97,10 @@ class RegistrationTest {
         drone.setState(DELIVERING);
         drone.setBatteryLevel(0);
 
-        assertThrows(
-                Exception.class,
+        ValidationException ex = assertThrows(
+                ValidationException.class,
                 () -> droneService.register(drone));
+        assertTrue(ex.getMessage().contains("weightLimitGram"), " Exception does not mention <weightLimitGram>");
     }
 
     @Test
@@ -109,9 +113,10 @@ class RegistrationTest {
         drone.setState(DELIVERED);
         drone.setBatteryLevel(0);
 
-        assertThrows(
-                Exception.class,
+        ValidationException ex = assertThrows(
+                ValidationException.class,
                 () -> droneService.register(drone));
+        assertTrue(ex.getMessage().contains("weightLimitGram"), " Exception does not mention <weightLimitGram>");
     }
 
     @Test
@@ -129,9 +134,10 @@ class RegistrationTest {
         drone.setState(LOADED);
         drone.setBatteryLevel(1);
 
-        assertThrows(
-                Exception.class,
+        ValidationException ex = assertThrows(
+                ValidationException.class,
                 () -> droneService.register(drone));
+        assertTrue(ex.getMessage().contains("serialNumber"), " Exception does not mention <serialNumber>");
     }
 
     @Test
@@ -144,9 +150,10 @@ class RegistrationTest {
         drone.setState(LOADING);
         drone.setBatteryLevel(100);
 
-        assertThrows(
-                Exception.class,
+        ValidationException ex = assertThrows(
+                ValidationException.class,
                 () -> droneService.register(drone));
+        assertTrue(ex.getMessage().contains("serialNumber"), " Exception does not mention <serialNumber>");
     }
 
 }
