@@ -23,7 +23,7 @@ public class DroneMonitorImpl implements DroneMonitor {
     private final DroneService droneService;
 
     @Override
-    @Scheduled(fixedRateString = "${drones-monitor-rate-in-milliseconds}")
+    @Scheduled(fixedRateString = "${drones-monitor.rate-in-milliseconds}")
     public void monitorAll() {
 
         droneService.findALl()

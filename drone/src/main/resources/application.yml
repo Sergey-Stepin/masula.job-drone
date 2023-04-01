@@ -1,4 +1,5 @@
-drones-monitor-rate-in-milliseconds: 5000
+drones-monitor.rate-in-milliseconds: 10000
+drone.battery-level.minimum-for-load: 25
 
 spring:
   jpa:

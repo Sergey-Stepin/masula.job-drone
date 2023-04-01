@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static services.stepin.example.drone.model.Drone.Model.*;
 import static services.stepin.example.drone.model.Drone.Model.LIGHTWEIGHT;
-import static services.stepin.example.drone.model.Drone.State.*;
+import static services.stepin.example.drone.model.State.*;
 
 @SpringBootTest
 class RegistrationTest {

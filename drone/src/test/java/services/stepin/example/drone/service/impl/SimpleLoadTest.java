@@ -52,7 +52,6 @@ class SimpleLoadTest {
         if(drone.getDroneId() == 0){
             droneRepository.save(drone);
         }
-
     }
 
     @Test

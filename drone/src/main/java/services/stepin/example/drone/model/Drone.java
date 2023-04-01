@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import static services.stepin.example.drone.model.Drone.State.IDLE;
+import static services.stepin.example.drone.model.State.IDLE;
 
 @Entity
 @Getter
@@ -13,7 +13,6 @@ import static services.stepin.example.drone.model.Drone.State.IDLE;
 public class Drone {
 
     public enum Model{ LIGHTWEIGHT, MIDDLEWEIGHT, CRUISERWEIGHT, HEAVYWEIGHT}
-    public enum State {IDLE, LOADING, LOADED, DELIVERING, DELIVERED, RETURNING}
 
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long droneId;

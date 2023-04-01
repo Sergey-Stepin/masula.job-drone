@@ -20,7 +20,7 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static services.stepin.example.drone.model.Drone.State.*;
+import static services.stepin.example.drone.model.State.*;
 
 
 @SpringBootTest

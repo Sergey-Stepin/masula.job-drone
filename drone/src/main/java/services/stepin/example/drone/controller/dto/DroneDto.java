@@ -6,8 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.model.Drone.Model;
-import services.stepin.example.drone.model.Drone.State;
 import services.stepin.example.drone.model.Load;
+import services.stepin.example.drone.model.State;
 
 @Data
 @Builder
