@@ -1,6 +1,7 @@
 package services.stepin.example.drone.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,6 +17,7 @@ public class Load {
     @Id@GeneratedValue(strategy = GenerationType.IDENTITY)
     private long loadId;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private Drone drone;
 

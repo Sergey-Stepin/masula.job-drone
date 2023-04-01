@@ -43,7 +43,6 @@ public class Medication {
     }
 
     public static void validate(Medication medication){
-        System.out.println("### " + medication);
 
         Matcher nameMatcher = NAME_PATTERN.matcher(medication.name);
         if(! nameMatcher.matches()){

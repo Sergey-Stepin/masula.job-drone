@@ -17,7 +17,6 @@ import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.model.Load;
 import services.stepin.example.drone.model.Medication;
 import services.stepin.example.drone.repository.DroneRepository;
-import services.stepin.example.drone.repository.LoadRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +24,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static services.stepin.example.drone.model.Drone.Model.HEAVYWEIGHT;
@@ -59,20 +59,27 @@ class LoadTest {
         drone.setWeightLimitGram(480);
     }
 
+    @BeforeEach
+    void prepareDatabase(){
+
+        if(drone.getDroneId() == 0){
+            droneRepository.save(drone);
+        }
+
+    }
+
     @Test
     void givenLoad_ShouldPersist() throws Exception {
-
-        Drone persistedDrone = droneRepository.save(drone);
-        long droneId = persistedDrone.getDroneId();
 
         Load load = createSimpleLoad();
 
         LoadDto requestDto = LoadDto.toDto(load);
 
-        MvcResult mvcResult = mockMvc.perform(post("/load?droneId=" + droneId)
+        MvcResult mvcResult = mockMvc.perform(post("/load")
                         .contentType("application/json")
                         .content(mapper.writeValueAsString(requestDto)))
                 .andExpect(status().isOk())
+                .andDo(print())
                 .andExpect(content().contentType("application/json"))
                 .andReturn();
 
@@ -109,7 +116,7 @@ class LoadTest {
         medication2.setCode("2_D");
         medication2.setWeightGram(50);
         medications.add(medication2);
-        byte[] image2 = resourceHelper.getImage("med_2.jpg");
+        byte[] image2 = resourceHelper.getImage("med_10.jpeg");
         medication2.setImage(image2);
 
         return medications;
@@ -154,9 +161,8 @@ class LoadTest {
         assertEquals("2_D", medication.getCode());
         assertEquals(50, medication.getWeightGram());
 
-        String image = resourceHelper.getImageAsString( "med_2.jpg");
+        String image = resourceHelper.getImageAsString( "med_10.jpeg");
         assertEquals(image, medication.getImage(), "images mismatch");
-
     }
 
     private Optional<MedicationDto> findMedicationInList(List<MedicationDto> medications, String name) {

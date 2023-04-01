@@ -1,6 +1,5 @@
 package services.stepin.example.drone.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeAll;
@@ -97,10 +96,9 @@ public class LoadInvalidMedicineTest {
 
     private MvcResult load(Load load) throws Exception {
 
-        long droneId = load.getDrone().getDroneId();
         LoadDto requestDto = LoadDto.toDto(load);
 
-        return mockMvc.perform(post("/load?droneId=" + droneId)
+        return mockMvc.perform(post("/load")
                         .contentType("application/json")
                         .content(mapper.writeValueAsString(requestDto)))
                 .andExpect(status().isBadRequest())
