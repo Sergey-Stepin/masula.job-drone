@@ -41,15 +41,19 @@ public class Drone {
     @Enumerated(EnumType.STRING)
     private State state = IDLE;
 
+    @Transient
+    private Load load;
+
     @Override
     public String toString() {
         return "Drone{" +
                 "droneId=" + droneId +
-                ", serialNumber=" + serialNumber +
+                ", serialNumber='" + serialNumber + '\'' +
                 ", model=" + model +
                 ", weightLimitGram=" + weightLimitGram +
                 ", batteryLevel=" + batteryLevel +
                 ", state=" + state +
+                ", load=" + load +
                 '}';
     }
 }

@@ -9,8 +9,6 @@ import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.service.DroneService;
 import services.stepin.example.drone.service.exception.DroneException;
 
-import java.util.List;
-
 @RestController
 @RequiredArgsConstructor
 public class DroneController {

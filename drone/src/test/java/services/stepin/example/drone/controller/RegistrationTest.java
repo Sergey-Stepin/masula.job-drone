@@ -11,7 +11,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import services.stepin.example.drone.controller.dto.DroneDto;
 import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.repository.DroneRepository;
-
+import services.stepin.example.drone.repository.LoadRepository;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,8 +35,12 @@ class RegistrationTest {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
+    @Autowired
+    private LoadRepository loadRepository;
+
     @BeforeEach
     void prepareDataBase() {
+        loadRepository.deleteAll();
         droneRepository.deleteAll();
     }
 

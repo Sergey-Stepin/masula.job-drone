@@ -2,11 +2,13 @@ package services.stepin.example.drone.service.impl;
 
 
 import jakarta.validation.ValidationException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.repository.DroneRepository;
+import services.stepin.example.drone.repository.LoadRepository;
 import services.stepin.example.drone.service.DroneService;
 
 import java.util.List;
@@ -27,6 +29,16 @@ class RegistrationTest {
     
     @Autowired
     private DroneRepository droneRepository;
+
+    @Autowired
+    private LoadRepository loadRepository;
+
+    @BeforeEach
+    void prepareDataBase() {
+        loadRepository.deleteAll();
+        droneRepository.deleteAll();
+    }
+
 
     @Test
     void givenDrone_shouldRegister(){
