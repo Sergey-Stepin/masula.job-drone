@@ -95,7 +95,6 @@ class RegistrationTest {
         drone.setWeightLimitGram(500);
         drone.setBatteryLevel(100);
 
-
         DroneDto requestDto = DroneDto.toDto(drone);
         mockMvc.perform(post("/register")
                         .contentType("application/json")

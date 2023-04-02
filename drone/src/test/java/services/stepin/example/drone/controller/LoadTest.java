@@ -17,6 +17,7 @@ import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.model.Load;
 import services.stepin.example.drone.model.Medication;
 import services.stepin.example.drone.repository.DroneRepository;
+import services.stepin.example.drone.service.DroneService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +44,7 @@ class LoadTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private DroneRepository droneRepository;
+    private DroneService droneService;
 
     private final ResourceHelper resourceHelper = new ResourceHelper();
 
@@ -63,7 +64,7 @@ class LoadTest {
     void prepareDatabase(){
 
         if(drone.getDroneId() == 0){
-            droneRepository.save(drone);
+            droneService.register(drone);
         }
 
     }
@@ -71,7 +72,7 @@ class LoadTest {
     @Test
     void givenLoad_ShouldPersist() throws Exception {
 
-        Load load = createSimpleLoad();
+        Load load = createValidLoad();
 
         LoadDto requestDto = LoadDto.toDto(load);
 
@@ -90,18 +91,18 @@ class LoadTest {
         checkResponse(responseDto);
     }
 
-    private Load createSimpleLoad() {
+    private Load createValidLoad() {
 
         Load load = new Load();
         load.setDrone(drone);
 
-        List<Medication> medications = createSimpleMedicationList();
+        List<Medication> medications = createValidMedicationList();
         load.setMedications(medications);
 
         return load;
     }
 
-    private List<Medication> createSimpleMedicationList() {
+    private List<Medication> createValidMedicationList() {
 
         List<Medication> medications = new ArrayList<>();
 

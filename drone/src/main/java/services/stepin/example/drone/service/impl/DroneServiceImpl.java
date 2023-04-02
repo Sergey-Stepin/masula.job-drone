@@ -10,11 +10,9 @@ import services.stepin.example.drone.model.State;
 import services.stepin.example.drone.repository.LoadRepository;
 import services.stepin.example.drone.service.DroneService;
 import services.stepin.example.drone.repository.DroneRepository;
-import services.stepin.example.drone.service.exception.DroneBatteryIsTooLow;
-import services.stepin.example.drone.service.exception.DroneIsNotAvailable;
-import services.stepin.example.drone.service.exception.DroneNotFoundException;
-import services.stepin.example.drone.service.exception.InvalidLoadException;
+import services.stepin.example.drone.service.exception.*;
 
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -44,6 +42,21 @@ public class DroneServiceImpl implements DroneService {
         validateLoad(load);
 
         return loadRepository.save(load);
+    }
+
+    @Override
+    public void unload(long loadId) {
+
+        Load load = loadRepository.findById(loadId)
+                .orElseThrow(() -> new LoadNotFoundException(" loadId: " + loadId));
+
+        if(load.getUnloadedAt() != null){
+            throw new IllegalArgumentException(String.format(
+                    "Cannot unload: the load (loadId: %s) is already unloaded ", loadId));
+        }
+
+        load.setUnloadedAt(OffsetDateTime.now());
+        loadRepository.save(load);
     }
 
     @Override
@@ -117,6 +130,7 @@ public class DroneServiceImpl implements DroneService {
 
         checkAvailability(drone);
         checkHasCurrentLoad(drone);
+        checkBatteryLevel(drone);
         checkWeight(drone, load);
     }
 
@@ -136,6 +150,16 @@ public class DroneServiceImpl implements DroneService {
         if (hasLoad(droneId)) {
             throw new DroneIsNotAvailable(String.format(
                     "The drone (droneId: %s, status: %s): Has already a load !",
+                    droneId,
+                    drone.getState()));
+        }
+    }
+
+    private void checkBatteryLevel(Drone drone){
+        long droneId = drone.getDroneId();
+        if (drone.getBatteryLevel() < batteryLevelMinimumForLoad) {
+            throw new DroneBatteryIsTooLow(String.format(
+                    "The drone (droneId: %s, status: %s): Battery level is too low !",
                     droneId,
                     drone.getState()));
         }

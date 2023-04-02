@@ -2,15 +2,12 @@ package services.stepin.example.drone.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.service.DroneCommunicator;
 import services.stepin.example.drone.service.DroneMonitor;
 import services.stepin.example.drone.service.DroneService;
-
-import java.util.logging.Logger;
 
 import static java.lang.String.format;
 

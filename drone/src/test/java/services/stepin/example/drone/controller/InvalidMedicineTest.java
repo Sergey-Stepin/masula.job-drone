@@ -16,6 +16,8 @@ import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.model.Load;
 import services.stepin.example.drone.model.Medication;
 import services.stepin.example.drone.repository.DroneRepository;
+import services.stepin.example.drone.service.DroneService;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +27,7 @@ import static services.stepin.example.drone.model.Drone.Model.HEAVYWEIGHT;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class LoadInvalidMedicineTest {
+public class InvalidMedicineTest {
 
     private final static ObjectMapper mapper = new ObjectMapper();
 
@@ -37,7 +39,7 @@ public class LoadInvalidMedicineTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private DroneRepository droneRepository;
+    private DroneService droneService;
 
     private final ResourceHelper resourceHelper = new ResourceHelper();
 
@@ -57,9 +59,8 @@ public class LoadInvalidMedicineTest {
     void prepareDatabase(){
 
         if(drone.getDroneId() == 0){
-            droneRepository.save(drone);
+            droneService.register(drone);
         }
-
     }
 
     @Test

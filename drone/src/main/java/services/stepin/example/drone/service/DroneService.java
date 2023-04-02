@@ -12,6 +12,8 @@ public interface DroneService {
 
     Load load(long droneId, Load load);
 
+    void unload(long loadId);
+
     Drone getWithLoad(long droneId);
 
     void updateState(long droneId, State state);

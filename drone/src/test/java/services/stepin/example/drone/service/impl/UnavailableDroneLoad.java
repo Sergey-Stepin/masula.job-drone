@@ -63,7 +63,6 @@ public class UnavailableDroneLoad {
         assertThrows(
                 DroneIsNotAvailable.class,
                 () -> droneService.load(droneId, load));
-
     }
 
     @Test
@@ -71,7 +70,7 @@ public class UnavailableDroneLoad {
 
         Drone drone = new Drone();
         drone.setModel(LIGHTWEIGHT);
-        drone.setSerialNumber("-90io;lIHn---({J:Nrhr");
+        drone.setSerialNumber("-90io;lIHn--({J:Nrhr");
         drone.setWeightLimitGram(100);
         drone.setBatteryLevel(24);
         Drone persistedDrone = droneService.register(drone);
@@ -83,12 +82,12 @@ public class UnavailableDroneLoad {
 
         Medication medication1 = new Medication();
         medication1.setName("80_9ik-f3pkmlkUHOJB");
-        medication1.setCode("DJLK00--DD");
+        medication1.setCode("DJLK00__DD");
         medication1.setWeightGram(10);
         medications.add(medication1);
         load.setMedications(medications);
 
-        long droneId = persistedDrone.getDroneId();;
+        long droneId = persistedDrone.getDroneId();
 
         assertThrows(
                 DroneBatteryIsTooLow.class,

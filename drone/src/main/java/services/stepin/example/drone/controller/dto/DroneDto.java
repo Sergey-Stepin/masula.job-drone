@@ -48,6 +48,9 @@ public class DroneDto {
 
     public static DroneDto toDto(Drone drone){
 
+        Load load = drone.getLoad();
+        LoadDto loadDto = LoadDto.toDto(load);
+
         return DroneDto.builder()
                 .droneId(drone.getDroneId())
                 .model(drone.getModel().name())
@@ -55,6 +58,7 @@ public class DroneDto {
                 .serialNumber(drone.getSerialNumber())
                 .weightLimitGram(drone.getWeightLimitGram())
                 .batteryLevel(drone.getBatteryLevel())
+                .loadDto(loadDto)
                 .build();
     }
 

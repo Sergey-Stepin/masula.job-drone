@@ -9,7 +9,6 @@ import services.stepin.example.drone.ResourceHelper;
 import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.model.Load;
 import services.stepin.example.drone.model.Medication;
-import services.stepin.example.drone.repository.DroneRepository;
 import services.stepin.example.drone.repository.LoadRepository;
 import services.stepin.example.drone.service.DroneService;
 
@@ -21,15 +20,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import static services.stepin.example.drone.model.Drone.Model.*;
 
 @SpringBootTest
-class SimpleLoadTest {
+class ValidLoadTest {
 
     private final ResourceHelper resourceHelper = new ResourceHelper();
 
     @Autowired
     private DroneService droneService;
-
-    @Autowired
-    private DroneRepository droneRepository;
 
     @Autowired
     private LoadRepository loadRepository;
@@ -40,9 +36,9 @@ class SimpleLoadTest {
     static void createDrone() {
 
         drone = new Drone();
-        drone.setModel(MIDDLEWEIGHT);
+        drone.setModel(HEAVYWEIGHT);
         drone.setSerialNumber("xxx-1234-ABC_#01");
-        drone.setWeightLimitGram(200);
+        drone.setWeightLimitGram(500);
     }
 
     @BeforeEach
@@ -50,12 +46,12 @@ class SimpleLoadTest {
         loadRepository.deleteAll();
 
         if(drone.getDroneId() == 0){
-            droneRepository.save(drone);
+            droneService.register(drone);
         }
     }
 
     @Test
-    void givenLoad_shouldPersist() {
+    void givenValidLoad_shouldPersist() {
 
         long droneId = drone.getDroneId();
         Load load = createSimpleLoad();
@@ -70,13 +66,13 @@ class SimpleLoadTest {
         Load load = new Load();
         load.setDrone(drone);
 
-        List<Medication> medications = createSimpleMedicationList();
+        List<Medication> medications = createValidMedicationList();
         load.setMedications(medications);
 
         return load;
     }
 
-    private List<Medication> createSimpleMedicationList() {
+    private List<Medication> createValidMedicationList() {
 
         List<Medication> medications = new ArrayList<>();
 
