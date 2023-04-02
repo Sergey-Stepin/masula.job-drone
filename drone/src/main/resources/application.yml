@@ -5,8 +5,8 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      dialect: org.hibernate.dialect.PostgreSQLDialect
-      ddl-auto: update
+      #dialect: org.hibernate.dialect.PostgreSQLDialect
+      ddl-auto: validate
     show-sql: true
   datasource:
     driverClassName: org.h2.Driver
@@ -16,5 +16,5 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
     liquibase-schema: liquibase
-    default-schema: income_taxes_db
+    default-schema: drone_database
     contexts: schema,setup

@@ -19,6 +19,7 @@ public class Load {
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER, optional = false)
+    @JoinColumn(name = "drone_id", nullable = false)
     private Drone drone;
 
     @Temporal(TemporalType.TIMESTAMP)
