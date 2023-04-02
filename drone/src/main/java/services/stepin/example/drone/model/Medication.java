@@ -43,15 +43,41 @@ public class Medication {
     }
 
     public static void validate(Medication medication){
+        validateName(medication);
+        validateCode(medication);
+        validateWeight(medication);
+    }
+
+    private static void validateName(Medication medication){
+
+        if(medication.name == null || medication.name.isBlank()){
+            throw  new InvalidMedicineException(" name is either null or blank: " + medication.name);
+        }
 
         Matcher nameMatcher = NAME_PATTERN.matcher(medication.name);
         if(! nameMatcher.matches()){
             throw new InvalidMedicineException(" Name does not match the pattern: " + NAME_PATTERN);
         }
 
+    }
+
+    private static void validateCode(Medication medication){
+
+        if(medication.code == null || medication.code.isBlank()){
+            throw  new InvalidMedicineException(" code is either null or blank: " + medication.code);
+        }
+
         Matcher codeMatcher = CODE_PATTERN.matcher(medication.code);
         if(! codeMatcher.matches()){
             throw new InvalidMedicineException(" Code does not match the pattern: " + CODE_PATTERN);
+        }
+
+    }
+
+    private static void validateWeight(Medication medication){
+
+        if(medication.weightGram <= 0){
+            throw  new InvalidMedicineException(" weightGram must be grater zero : " + medication.code);
         }
 
     }

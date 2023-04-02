@@ -19,11 +19,9 @@ import services.stepin.example.drone.service.DroneService;
 import services.stepin.example.drone.service.impl.DroneMonitorImpl;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static services.stepin.example.drone.model.Drone.Model.*;
@@ -65,8 +63,6 @@ class BatteryLeveTest {
 
         Drone drone = createDrone(batteryLevel);
         DroneDto droneDto = register(drone);
-
-        System.out.println("### " + droneDto);
 
         drone.setDroneId(droneDto.getDroneId());
 
