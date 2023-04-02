@@ -67,4 +67,15 @@ public class DroneController {
 
         return ResponseEntity.ok(droneDto);
     }
+
+    @GetMapping("/available")
+    private ResponseEntity<List<DroneDto>> available(){
+
+        List<DroneDto> dtoList = droneService.available()
+                .stream()
+                .map(DroneDto::toDto)
+                .toList();
+
+        return ResponseEntity.ok(dtoList);
+    }
 }

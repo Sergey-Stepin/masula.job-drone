@@ -113,6 +113,12 @@ public class DroneServiceImpl implements DroneService {
         droneRepository.save(foundDrone);
     }
 
+    @Override
+    public int getBatteryLevel(long droneId) {
+        Drone drone = findById(droneId);
+        return drone.getBatteryLevel();
+    }
+
     private void validateLoad(Load load){
 
         List<Medication> medications = load.getMedications();

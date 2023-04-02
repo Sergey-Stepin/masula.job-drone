@@ -20,7 +20,7 @@ import static services.stepin.example.drone.model.Drone.Model.CRUISERWEIGHT;
 import static services.stepin.example.drone.model.Drone.Model.LIGHTWEIGHT;
 
 @SpringBootTest
-public class UnavailableDroneLoad {
+public class UnavailableDroneLoadTest {
 
     private final ResourceHelper resourceHelper = new ResourceHelper();
 

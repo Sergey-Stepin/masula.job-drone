@@ -15,7 +15,6 @@ import services.stepin.example.drone.controller.dto.LoadDto;
 import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.model.Load;
 import services.stepin.example.drone.model.Medication;
-import services.stepin.example.drone.repository.DroneRepository;
 import services.stepin.example.drone.service.DroneService;
 
 import java.util.ArrayList;
