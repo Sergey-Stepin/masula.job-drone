@@ -17,7 +17,6 @@ import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.model.Load;
 import services.stepin.example.drone.model.Medication;
 import services.stepin.example.drone.service.DroneService;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -64,7 +63,6 @@ class LoadTest {
         if(drone.getDroneId() == 0){
             droneService.register(drone);
         }
-
     }
 
     @Test

@@ -69,7 +69,7 @@ public class DroneController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<DroneDto>> available(){
+    public ResponseEntity<List<DroneDto>> getAvailable(){
 
         List<DroneDto> dtoList = droneService.available()
                 .stream()

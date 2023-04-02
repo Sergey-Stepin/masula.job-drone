@@ -15,6 +15,7 @@ import services.stepin.example.drone.repository.LoadRepository;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static services.stepin.example.drone.model.Drone.Model.*;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -87,7 +88,7 @@ class RegistrationTest {
     }
 
     @Test
-    void givenInvalidDrone_shouldBadRequest() throws Exception {
+    void givenInvalidSerialNumber_shouldBadRequest() throws Exception {
 
         Drone drone = new Drone();
         drone.setModel(CRUISERWEIGHT);
@@ -100,7 +101,46 @@ class RegistrationTest {
                         .contentType("application/json")
                         .content(mapper.writeValueAsString(requestDto)))
                 .andExpect(status().isBadRequest())
+                .andDo(print())
                 .andExpect(content().string(containsString("serialNumber")))
+                .andReturn();
+    }
+
+    @Test
+    void givenInvalidWeightLimit_shouldBadRequest() throws Exception {
+
+        Drone drone = new Drone();
+        drone.setModel(HEAVYWEIGHT);
+        drone.setSerialNumber("OK");
+        drone.setWeightLimitGram(501);
+        drone.setBatteryLevel(100);
+
+        DroneDto requestDto = DroneDto.toDto(drone);
+        mockMvc.perform(post("/register")
+                        .contentType("application/json")
+                        .content(mapper.writeValueAsString(requestDto)))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andExpect(content().string(containsString("weightLimitGram")))
+                .andReturn();
+    }
+
+    @Test
+    void givenInvalidBatteryLevel_shouldBadRequest() throws Exception {
+
+        Drone drone = new Drone();
+        drone.setModel(LIGHTWEIGHT);
+        drone.setSerialNumber("ok");
+        drone.setWeightLimitGram(1);
+        drone.setBatteryLevel(101);
+
+        DroneDto requestDto = DroneDto.toDto(drone);
+        mockMvc.perform(post("/register")
+                        .contentType("application/json")
+                        .content(mapper.writeValueAsString(requestDto)))
+                .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andExpect(content().string(containsString("batteryLevel")))
                 .andReturn();
     }
 }

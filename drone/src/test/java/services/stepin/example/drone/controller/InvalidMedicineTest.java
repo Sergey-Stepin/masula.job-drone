@@ -20,7 +20,11 @@ import services.stepin.example.drone.service.DroneService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static services.stepin.example.drone.model.Drone.Model.HEAVYWEIGHT;
 
@@ -41,7 +45,6 @@ public class InvalidMedicineTest {
     private DroneService droneService;
 
     private final ResourceHelper resourceHelper = new ResourceHelper();
-
 
     private static Drone drone;
 
@@ -75,7 +78,7 @@ public class InvalidMedicineTest {
         medications.add(medication1);
         load.setMedications(medications);
 
-        load(load);
+        load(load, "Name does not match the pattern");
     }
 
     @Test
@@ -91,10 +94,10 @@ public class InvalidMedicineTest {
         medications.add(medication1);
         load.setMedications(medications);
 
-        load(load);
+        load(load, "Code does not match the pattern");
     }
 
-    private MvcResult load(Load load) throws Exception {
+    private MvcResult load(Load load, String match) throws Exception {
 
         LoadDto requestDto = LoadDto.toDto(load);
 
@@ -102,6 +105,8 @@ public class InvalidMedicineTest {
                         .contentType("application/json")
                         .content(mapper.writeValueAsString(requestDto)))
                 .andExpect(status().isBadRequest())
+                .andDo(print())
+                .andExpect(content().string(containsString(match)))
                 .andReturn();
     }
 
