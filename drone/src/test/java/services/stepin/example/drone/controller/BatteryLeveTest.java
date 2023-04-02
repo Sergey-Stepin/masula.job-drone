@@ -1,10 +1,8 @@
 package services.stepin.example.drone.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -49,7 +47,7 @@ class BatteryLeveTest {
     }
 
     @Test
-    void givenDrone_shouldGetBatteryLevel() throws Exception {
+    void givenDrones_shouldGetBatteryLevel() throws Exception {
 
         Drone drone = createAndRegisterDrone(100);
         assertEquals(100, getBatteryLevel(drone));
@@ -57,6 +55,13 @@ class BatteryLeveTest {
         when(droneCommunicator.getBatteryLevel(drone)).thenReturn(75);
         droneMonitor.monitor(drone);
         assertEquals(75, getBatteryLevel(drone));
+
+        Drone another = createAndRegisterDrone(30);
+        assertEquals(30, getBatteryLevel(another));
+
+        when(droneCommunicator.getBatteryLevel(drone)).thenReturn(25);
+        droneMonitor.monitor(drone);
+        assertEquals(25, getBatteryLevel(drone));
     }
 
     private Drone createAndRegisterDrone(int batteryLevel) throws Exception {
