@@ -69,7 +69,7 @@ public class DroneController {
     }
 
     @GetMapping("/available")
-    private ResponseEntity<List<DroneDto>> available(){
+    public ResponseEntity<List<DroneDto>> available(){
 
         List<DroneDto> dtoList = droneService.available()
                 .stream()
@@ -77,5 +77,11 @@ public class DroneController {
                 .toList();
 
         return ResponseEntity.ok(dtoList);
+    }
+
+    @GetMapping("/battery_level")
+    public ResponseEntity<Integer> getBatteryLevel(@PathParam("droneId") long droneId){
+        int batteryLevel = droneService.getBatteryLevel(droneId);
+        return ResponseEntity.ok(batteryLevel);
     }
 }

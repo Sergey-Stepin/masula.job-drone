@@ -1,9 +1,7 @@
 package services.stepin.example.drone.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,14 +106,26 @@ class AvailableDronesTest {
     }
 
     private Drone createAndRegisterDrone(String serialNumber, Model model, int weightLimit) throws Exception {
+
+        Drone drone = createDrone(serialNumber, model, weightLimit);
+        DroneDto droneDto = register(drone);
+        drone.setDroneId(droneDto.getDroneId());
+
+        return drone;
+    }
+
+    private Drone createDrone(String serialNumber, Model model, int weightLimit){
         Drone drone = new Drone();
         drone.setModel(model);
         drone.setSerialNumber(serialNumber);
         drone.setWeightLimitGram(weightLimit);
+        return drone;
+    }
+
+    private DroneDto register(Drone drone) throws Exception {
 
         DroneDto requestDto = DroneDto.toDto(drone);
 
-        System.out.println("### " + drone);
         MvcResult mvcResult = mockMvc.perform(post("/register")
                         .contentType("application/json")
                         .content(mapper.writeValueAsString(requestDto)))
@@ -124,11 +134,7 @@ class AvailableDronesTest {
                 .andReturn();
 
         String stingResponse = mvcResult.getResponse().getContentAsString();
-        DroneDto responseDto = mapper.readValue(stingResponse, DroneDto.class);
-
-        drone.setDroneId(responseDto.getDroneId());
-
-        return drone;
+        return mapper.readValue(stingResponse, DroneDto.class);
     }
 
     private List<DroneDto> getAvailable() throws Exception {
@@ -139,7 +145,7 @@ class AvailableDronesTest {
                 .andReturn();
 
         String stingResponse = mvcResult.getResponse().getContentAsString();
-        return mapper.readValue(stingResponse, new TypeReference<List<DroneDto>>() { });
+        return mapper.readValue(stingResponse, new TypeReference<>() { });
     }
 
 

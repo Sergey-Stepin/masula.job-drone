@@ -27,7 +27,8 @@ public class DroneMonitorImpl implements DroneMonitor {
                 .forEach(this::monitor);
     }
 
-    private void monitor(Drone drone){
+    @Override
+    public void monitor(Drone drone){
 
         int batteryLevel = droneCommunicator.getBatteryLevel(drone);
         log(drone, batteryLevel);

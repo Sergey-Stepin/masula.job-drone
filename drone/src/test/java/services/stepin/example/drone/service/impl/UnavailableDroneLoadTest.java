@@ -56,7 +56,7 @@ public class UnavailableDroneLoadTest {
         medications.add(medication2);
         load.setMedications(medications);
 
-        long droneId = persistedDrone.getDroneId();;
+        long droneId = persistedDrone.getDroneId();
 
         droneService.load(droneId, load);
 
