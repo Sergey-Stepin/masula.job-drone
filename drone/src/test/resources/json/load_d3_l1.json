@@ -1,0 +1,15 @@
+{
+  "droneId":3,
+  "medications":[
+    {
+      "name":"Yammy_pills_1",
+      "weightGram":70,
+      "code":"_01T"
+    },
+    {
+      "name":"___may_Induce_coma-13",
+      "weightGram":90,
+      "code":"2_FF"
+      }
+  ]
+}

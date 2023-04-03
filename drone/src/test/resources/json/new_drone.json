@@ -1,9 +1,0 @@
-{
-	"droneId":0,
-	"serialNumber":"ssssABC-1",
-	"model":"HEAVYWEIGHT",
-	"weightLimitGram":450,
-	"batteryLevel":100,
-	"state":"IDLE",
-	"loadDto":null
-}

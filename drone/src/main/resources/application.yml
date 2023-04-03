@@ -1,13 +1,12 @@
-drones-monitor.rate-in-milliseconds: 10000
+drones-monitor.rate-in-milliseconds: 60000
 drone.battery-level.minimum-for-load: 25
 
 spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      #dialect: org.hibernate.dialect.PostgreSQLDialect
       ddl-auto: validate
-    show-sql: true
+    show-sql: false
   datasource:
     driverClassName: org.h2.Driver
     url: jdbc:h2:mem:drone_database;CASE_INSENSITIVE_IDENTIFIERS=TRUE;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS liquibase\;CREATE SCHEMA IF NOT EXISTS drone_db\;SET SCHEMA drone_db
@@ -16,5 +15,5 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
     liquibase-schema: liquibase
-    default-schema: drone_database
+    default-schema: liquibase
     contexts: schema,setup
