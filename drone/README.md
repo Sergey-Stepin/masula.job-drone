@@ -4,36 +4,39 @@ The service was designed and implemented according to the requirements provided 
 
 ### Description
 
-Drones are registered and stored in the service database along with the medications lists they load and deliver
+Drones are registered and stored in the service database along with the medications lists which they load and deliver.
 
-Each list of medications for a delivery is packed in a load.
-The load is passed to the service where it is validated and stored.
+Each list of medications for a delivery is packed in a load which is passed to the service, where it is validated and stored.
 
-A load has the following attributes (apart from the list of the medications):
+The load is checked against the following rules:
+- whether the total weight of the load is bearable for the drone
+- whether the drone is in available state (free to be loaded)
+- whether the drone has already a created load to carry 
+- whether the drone's battery level is high enough (25% minimum)
+- 
+Each medication is validated according to the requirements in TASK.md
+
+When the load is validated it is persisted in database together with the list of the medications.
+A persisted load has the following attributes (apart from the list of the medications):
+- loadId (unique key)
 - createdAt
 - loadedAt
 - unloadedAt
+- droneId
 
-A load for a drone is checked according to the next rules:
-- whether the total weight of the load is bearable for the drone
-- whether the drone is in available state (free to be loaded)
-- whether the drone has already a created load
-- whether the battery level is enough (25% minimum)
-  Each medication is validated according to the requirements in TASK.md
-
-When the load is successfully created it is persisted in database.
-After that the drone is supposed to receive the information pertaining to the new load,
-then physically load and deliver it, providing the information about its state
+After that, the drone is supposed to physically load and deliver the medicines, exchanging the information with the service, 
+pertaining its state, time of physical loading/unloading, etc.
 (the communication with drones is out of the scope of this project).
+Clients can obtain the respective information via the service. 
 
-Periodically, in a separate thread, the service communicates with the registered drones, requesting their battery levels.
-The period of the requesting is set as parameter <drone.battery-level.minimum-for-load> (see file src/main/resources/application.yml)
-The received battery values are logged in rotating log-file logs/drone-monitor.log
+Periodically, in a separate thread, the service requests battery levels of the registered drones.
+The period of the requesting task is set as a parameter <drone.battery-level.minimum-for-load> 
+(see file src/main/resources/application.yml)
+The received battery values are logged in a rotating log-file logs/drone-monitor.log
 
 The communication with drones is mocked with a class MockDroneCommunicator.java.
 It imitates the communication with a drone, acquiring its battery level.
-The mock just returns the battery level persisted in database at the time of the registration
-
+The mock just returns the battery level saved in database at the time of the registration
 
 ### Instruction
 
@@ -41,7 +44,7 @@ The service was built and tested in the following environment:
 - OpenJDK 17.0.4
 - Gradle 7.2
 
-Before building and using the service JDK and Gradle must be installed and configured properly 
+Before building and using the service, JDK and Gradle must be installed and configured properly 
 (the configuration of java and gradle is out of the scope of this instruction)
 
 ### Build and test
@@ -56,7 +59,7 @@ drone/
 2.1. For Windows:
 gradlew.bat build
 
-3. Unit-tests are done automatically within the building. 
+3. Unit-tests are done automatically together with the building task
 If necessary, the tests can be run separately with the next command
 
 3.1. For Linux:
@@ -66,7 +69,7 @@ If necessary, the tests can be run separately with the next command
 gradlew.bat test
 
 ### Start
-After the building, start the service using command:
+After finishing the building, start the service using command:
 
 - For Linux:
 ./gradlew bootRun
