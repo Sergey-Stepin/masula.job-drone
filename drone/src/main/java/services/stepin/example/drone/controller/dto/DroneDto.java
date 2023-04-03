@@ -34,10 +34,14 @@ public class DroneDto {
         Drone drone = new Drone();
         drone.setDroneId(dto.droneId);
         drone.setModel(Model.valueOf(dto.model));
-        drone.setState(State.valueOf(dto.state));
         drone.setSerialNumber(dto.serialNumber);
         drone.setWeightLimitGram(dto.weightLimitGram);
         drone.setBatteryLevel(dto.batteryLevel);
+
+        String state = dto.state;
+        if(state != null) {
+            drone.setState(State.valueOf(state));
+        }
 
         LoadDto loadDto = dto.loadDto;
         Load load = LoadDto.fromDto(loadDto);

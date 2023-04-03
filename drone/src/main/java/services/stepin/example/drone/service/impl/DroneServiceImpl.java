@@ -145,7 +145,7 @@ public class DroneServiceImpl implements DroneService {
         long droneId = drone.getDroneId();
         if( !isAvailable(droneId)){
             throw new DroneIsNotAvailable(String.format(
-                    "The drone (droneId: %s, status: %s) is not available! !",
+                    " (droneId: %s, status: %s) The drone is not available! !",
                     droneId,
                     drone.getState()));
         }
@@ -155,7 +155,7 @@ public class DroneServiceImpl implements DroneService {
         long droneId = drone.getDroneId();
         if (hasLoad(droneId)) {
             throw new DroneIsNotAvailable(String.format(
-                    "The drone (droneId: %s, status: %s): Has already a load !",
+                    "(droneId: %s, status: %s) The drone Has already a load !",
                     droneId,
                     drone.getState()));
         }
@@ -165,7 +165,7 @@ public class DroneServiceImpl implements DroneService {
         long droneId = drone.getDroneId();
         if (drone.getBatteryLevel() < batteryLevelMinimumForLoad) {
             throw new DroneBatteryIsTooLow(String.format(
-                    "The drone (droneId: %s, status: %s): Battery level is too low !",
+                    "(droneId: %s, status: %s) The drone Battery level is too low !",
                     droneId,
                     drone.getState()));
         }
