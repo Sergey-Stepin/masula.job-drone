@@ -1,73 +1,136 @@
 ## Drones
 
-[[_TOC_]]
+The service was designed and implemented according to the requirements provided in file TASK.md
 
----
+### Description
 
-:scroll: **START**
+Drones are registered and stored in the service database along with the medications lists which they load and deliver.
+
+Each list of medications for a delivery is packed in a load which is passed to the service, where it is validated and stored.
+
+The load is checked against the following rules:
+- whether the total weight of the load is bearable for the drone
+- whether the drone is in available state (free to be loaded)
+- whether the drone has already a created load to carry 
+- whether the drone's battery level is high enough (25% minimum)
+- 
+Each medication is validated according to the requirements in TASK.md
+
+When the load is validated it is persisted in database together with the list of the medications.
+A persisted load has the following attributes (apart from the list of the medications):
+- loadId (unique key)
+- createdAt
+- loadedAt
+- unloadedAt
+- droneId
+
+After that, the drone is supposed to physically load and deliver the medicines, exchanging the information with the service, 
+pertaining its state, time of physical loading/unloading, etc.
+(the communication with drones is out of the scope of this project).
+Clients can obtain the respective information via the service. 
+
+Periodically, in a separate thread, the service requests battery levels of the registered drones.
+The period of the requesting task is set as a parameter <drone.battery-level.minimum-for-load> 
+(see file src/main/resources/application.yml)
+The received battery values are logged in a rotating log-file logs/drone-monitor.log
+
+The communication with drones is mocked with a class MockDroneCommunicator.java.
+It imitates the communication with a drone, acquiring its battery level.
+The mock just returns the battery level saved in database at the time of the registration
+
+### Instruction
+
+The service was built and tested in the following environment:
+- OpenJDK 17.0.4
+- Gradle 7.2
+
+Before building and using the service, JDK and Gradle must be installed and configured properly 
+(the configuration of java and gradle is out of the scope of this instruction)
+
+### Build and test
+1. Chose directory: 
+drone/
+
+2. run command:
+
+a) For Linux:
+./gradlew build
+
+b) For Windows:
+gradlew.bat build
+
+3. Unit-tests are done automatically together with the building task
+If necessary, the tests can be run separately with the next command
+
+a) For Linux:
+./gradlew test
+
+b) For Windows:
+gradlew.bat test
+
+### Start
+After finishing the building, start the service using gradle command:
+
+- For Linux:
+./gradlew bootRun
+
+- For Windows:
+gradlew.bat bootRun
+
+Alternatively, if the service was successfully builr, it can be start without gradle using command:
+java -jar build/libs/drone-0.0.1-SNAPSHOT.jar
+
+There must start a Spring application; If started successfully, the application logs the next messages: 
+... Tomcat started on port(s): 8080 (http) with context path ...
+... Started DroneApplication in ...
+
+### Demonstration
+After a successful start the main features of the service could be presented by the following commands (run from the direactory /drone):
+
+- Register a drone:
+curl http://localhost:8080/register -X POST -H "Content-Type: application/json" -d @src/test/resources/json/drone_d4.json
+  (response: the drone with created droneId)
+
+- Check all registered drones:
+curl http://localhost:8080/list
+  (response: a list of drones, including the new one)
+
+- Try to make a load for drone#1 (droneId=1):
+curl http://localhost:8080/load?droneId=1 -X POST -H "Content-Type: application/json" -d @src/test/resources/json/load_1.json
+ (response: 400-BadRequest, 
+ with message: (droneId: 1, status: DELIVERING) The drone is not available!)
+
+- Check all drones available for loading:
+curl http://localhost:8080/available
+  (response: a list of drones, which state is either IDLE or RETURNING)
+
+- Try to make the same load for drone#2 (droneId=2):
+curl http://localhost:8080/load?droneId=2 -X POST -H "Content-Type: application/json" -d @src/test/resources/json/load_1.json
+  (response: 400-BadRequest, 
+ with message: The load is to heavy for the drone: droneId: 2, weight_limit: 50, total load weight: 160)
+
+- Try to make the same load for drone#3 (droneId=3):
+curl http://localhost:8080/load?droneId=3 -X POST -H "Content-Type: application/json" -d @src/test/resources/json/load_2.json
+  (response: the load with created loadId)
+
+- Check drone#3 (droneId=3):
+  curl http://localhost:8080/drone_with_load?droneId=3
+  (response: drone info with the load)
+
+- Try to make another load for drone#3 (droneId=3):
+curl http://localhost:8080/load?droneId=3 -X POST -H "Content-Type: application/json" -d @src/test/resources/json/load_2.json
+  (response: 400-BadRequest,
+  with message: (droneId: 3, status: RETURNING) The drone Has already a load !)
+
+- Check drone#4 (droneId=4), created earlier:
+curl http://localhost:8080/drone_with_load?droneId=4
+  (response: drone info with load = null, since the drone has no load)
+
+- Check the battery of drone#4 (droneId=4):
+curl http://localhost:8080/battery_level?droneId=4
+  (response: integer value, the was value set when the drone was registered)
+
+## END
+Have you got any questions, feel free to ask 
 
 
-### Introduction
-
-There is a major new technology that is destined to be a disruptive force in the field of transportation: **the drone**. Just as the mobile phone allowed developing countries to leapfrog older technologies for personal communication, the drone has the potential to leapfrog traditional transportation infrastructure.
-
-Useful drone functions include delivery of small items that are (urgently) needed in locations with difficult access.
-
----
-
-### Task description
-
-We have a fleet of **10 drones**. A drone is capable of carrying devices, other than cameras, and capable of delivering small loads. For our use case **the load is medications**.
-
-A **Drone** has:
-- serial number (100 characters max);
-- model (Lightweight, Middleweight, Cruiserweight, Heavyweight);
-- weight limit (500gr max);
-- battery capacity (percentage);
-- state (IDLE, LOADING, LOADED, DELIVERING, DELIVERED, RETURNING).
-
-Each **Medication** has: 
-- name (allowed only letters, numbers, ‘-‘, ‘_’);
-- weight;
-- code (allowed only upper case letters, underscore and numbers);
-- image (picture of the medication case).
-
-Develop a service via REST API that allows clients to communicate with the drones (i.e. **dispatch controller**). The specific communicaiton with the drone is outside the scope of this task. 
-
-The service should allow:
-- registering a drone;
-- loading a drone with medication items;
-- checking loaded medication items for a given drone; 
-- checking available drones for loading;
-- check drone battery level for a given drone;
-
-> Feel free to make assumptions for the design approach. 
-
----
-
-### Requirements
-
-While implementing your solution **please take care of the following requirements**: 
-
-#### Functional requirements
-
-- There is no need for UI;
-- Prevent the drone from being loaded with more weight that it can carry;
-- Prevent the drone from being in LOADING state if the battery level is **below 25%**;
-- Introduce a periodic task to check drones battery levels and create history/audit event log for this.
-
----
-
-#### Non-functional requirements
-
-- Input/output data must be in JSON format;
-- Your project must be buildable and runnable;
-- Your project must have a README file with build/run/test instructions (use DB that can be run locally, e.g. in-memory, via container);
-- Any data required by the application to run (e.g. reference tables, dummy data) must be preloaded in
-the database.
-- JUnit tests are optional but advisable (if you have time);
-- Advice: Show us how you work through your commit history.
-
----
-
-:scroll: **END** 
