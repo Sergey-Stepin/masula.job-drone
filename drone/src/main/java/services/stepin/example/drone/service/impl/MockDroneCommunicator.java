@@ -6,8 +6,6 @@ import services.stepin.example.drone.model.Drone;
 import services.stepin.example.drone.repository.DroneRepository;
 import services.stepin.example.drone.service.DroneCommunicator;
 
-import java.util.Random;
-
 @Service
 @AllArgsConstructor
     public class MockDroneCommunicator implements DroneCommunicator {
