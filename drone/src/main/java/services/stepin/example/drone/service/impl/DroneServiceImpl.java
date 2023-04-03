@@ -155,7 +155,7 @@ public class DroneServiceImpl implements DroneService {
         long droneId = drone.getDroneId();
         if (hasLoad(droneId)) {
             throw new DroneIsNotAvailable(String.format(
-                    "(droneId: %s, status: %s) The drone Has already a load !",
+                    "(droneId: %s, status: %s) The drone has already a load !",
                     droneId,
                     drone.getState()));
         }
