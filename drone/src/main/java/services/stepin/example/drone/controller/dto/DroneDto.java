@@ -27,7 +27,7 @@ public class DroneDto {
 
     private String state;
 
-    private LoadDto loadDto;
+    private LoadDto load;
 
     public static Drone fromDto(DroneDto dto){
 
@@ -43,7 +43,7 @@ public class DroneDto {
             drone.setState(State.valueOf(state));
         }
 
-        LoadDto loadDto = dto.loadDto;
+        LoadDto loadDto = dto.load;
         Load load = LoadDto.fromDto(loadDto);
         drone.setLoad(load);
 
@@ -62,7 +62,7 @@ public class DroneDto {
                 .serialNumber(drone.getSerialNumber())
                 .weightLimitGram(drone.getWeightLimitGram())
                 .batteryLevel(drone.getBatteryLevel())
-                .loadDto(loadDto)
+                .load(loadDto)
                 .build();
     }
 

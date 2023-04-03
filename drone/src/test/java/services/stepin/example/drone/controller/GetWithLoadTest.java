@@ -149,7 +149,7 @@ class GetWithLoadTest {
 
         DroneDto droneDto = getResponse(mvcResult, DroneDto.class);
 
-        assertNull(droneDto.getLoadDto());
+        assertNull(droneDto.getLoad());
     }
 
     private void checkDroneWithLoad(long droneId, long loadId) throws Exception {
@@ -162,7 +162,7 @@ class GetWithLoadTest {
 
         DroneDto droneDto = getResponse(mvcResult, DroneDto.class);
 
-        LoadDto loadDto = droneDto.getLoadDto();
+        LoadDto loadDto = droneDto.getLoad();
         checkLoad(loadDto, loadId);
     }
 

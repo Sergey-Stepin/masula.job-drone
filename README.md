@@ -130,6 +130,7 @@ curl http://localhost:8080/drone_with_load?droneId=4
 curl http://localhost:8080/battery_level?droneId=4
   (response: integer value, the was value set when the drone was registered)
 
+enjoy yourself :)
 ## END
 Have you got any questions, feel free to ask 
 
