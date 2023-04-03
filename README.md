@@ -89,55 +89,55 @@ After a successful start the main features of the service could be presented by 
 
 Register a drone:
 curl http://localhost:8080/register -X POST -H "Content-Type: application/json" -d @src/test/resources/json/drone_d4.json  
----
+-
 (response: the drone with created droneId)
 
 Check all registered drones:
 curl http://localhost:8080/list  
----
+-
 (response: a list of drones, including the new one)  
 
 Try to make a load for drone#1 (droneId=1):
 curl http://localhost:8080/load?droneId=1 -X POST -H "Content-Type: application/json" -d @src/test/resources/json/load_1.json  
----
+-
 (response: 400-BadRequest,   
 with message: (droneId: 1, status: DELIVERING) The drone is not available!)  
 
 Check all drones available for loading:
 curl http://localhost:8080/available  
----
+-
 (response: a list of drones, which state is either IDLE or RETURNING)  
 
 Try to make the same load for drone#2 (droneId=2):
 curl http://localhost:8080/load?droneId=2 -X POST -H "Content-Type: application/json" -d @src/test/resources/json/load_1.json  
----
+-
 (response: 400-BadRequest,   
 with message: The load is to heavy for the drone: droneId: 2, weight_limit: 50, total load weight: 160)  
 
 Try to make the same load for drone#3 (droneId=3):
 curl http://localhost:8080/load?droneId=3 -X POST -H "Content-Type: application/json" -d @src/test/resources/json/load_2.json  
----
+-
 (response: the load with created loadId) 
 
 Check drone#3 (droneId=3):
 curl http://localhost:8080/drone_with_load?droneId=3  
----
+-
 (response: drone info with the load)  
 
 Try to make another load for drone#3 (droneId=3):
 curl http://localhost:8080/load?droneId=3 -X POST -H "Content-Type: application/json" -d @src/test/resources/json/load_2.json  
----
+-
 (response: 400-BadRequest,  
 with message: (droneId: 3, status: RETURNING) The drone Has already a load !)  
 
 Check drone#4 (droneId=4), created earlier:
 curl http://localhost:8080/drone_with_load?droneId=4  
----
+-
 (response: drone info with load = null, since the drone has no load)  
 
 Check the battery of drone#4 (droneId=4):
 curl http://localhost:8080/battery_level?droneId=4  
----
+-
 (response: integer value, the was value set when the drone was registered)  
 
 enjoy yourself :)
