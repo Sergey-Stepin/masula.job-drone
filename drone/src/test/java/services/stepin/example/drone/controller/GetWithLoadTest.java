@@ -129,7 +129,7 @@ class GetWithLoadTest {
 
         LoadDto loadDto = LoadDto.toDto(load);
 
-        MvcResult mvcResult = mockMvc.perform(post("/load")
+        MvcResult mvcResult = mockMvc.perform(post("/load?droneId=" + loadDto.getDroneId())
                         .contentType("application/json")
                         .content(mapper.writeValueAsString(loadDto)))
                 .andExpect(status().isOk())

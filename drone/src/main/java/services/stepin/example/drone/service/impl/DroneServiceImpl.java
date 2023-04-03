@@ -134,10 +134,10 @@ public class DroneServiceImpl implements DroneService {
 
     private void checkAvailability(Drone drone, Load load){
 
+        checkWeight(drone, load);
         checkAvailability(drone);
         checkHasCurrentLoad(drone);
         checkBatteryLevel(drone);
-        checkWeight(drone, load);
     }
 
     private void checkAvailability(Drone drone){

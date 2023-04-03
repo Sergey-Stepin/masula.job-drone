@@ -10,7 +10,7 @@ import java.util.Random;
 
 @Service
 @AllArgsConstructor
-public class MockDroneCommunicator implements DroneCommunicator {
+    public class MockDroneCommunicator implements DroneCommunicator {
 
     private final DroneRepository droneRepository;
     @Override

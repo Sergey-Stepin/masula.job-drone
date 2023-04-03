@@ -1,0 +1,14 @@
+{
+  "medications":[
+    {
+      "name":"Soothing-Balm_Onto-You-Wounds",
+      "weightGram":25,
+      "code":"S"
+    },
+    {
+      "name":"___Bitter_as_the_truth_but_calming_like_a_lie",
+      "weightGram":33,
+      "code":"1"
+      }
+  ]
+}

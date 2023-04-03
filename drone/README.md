@@ -1,7 +1,38 @@
 ## Drones
 
+The service was designed and implemented according to the requirements provided in file TASK.md
+
 ### Description
 
+Drones are registered and stored in the service database along with the medications lists they load and deliver
+
+Each list of medications for a delivery is packed in a load.
+The load is passed to the service where it is validated and stored.
+
+A load has the following attributes (apart from the list of the medications):
+- createdAt
+- loadedAt
+- unloadedAt
+
+A load for a drone is checked according to the next rules:
+- whether the total weight of the load is bearable for the drone
+- whether the drone is in available state (free to be loaded)
+- whether the drone has already a created load
+- whether the battery level is enough (25% minimum)
+  Each medication is validated according to the requirements in TASK.md
+
+When the load is successfully created it is persisted in database.
+After that the drone is supposed to receive the information pertaining to the new load,
+then physically load and deliver it, providing the information about its state
+(the communication with drones is out of the scope of this project).
+
+Periodically, in a separate thread, the service communicates with the registered drones, requesting their battery levels.
+The period of the requesting is set as parameter <drone.battery-level.minimum-for-load> (see file src/main/resources/application.yml)
+The received battery values are logged in rotating log-file logs/drone-monitor.log
+
+The communication with drones is mocked with a class MockDroneCommunicator.java.
+It imitates the communication with a drone, acquiring its battery level.
+The mock just returns the battery level persisted in database at the time of the registration
 
 
 ### Instruction
@@ -11,7 +42,7 @@ The service was built and tested in the following environment:
 - Gradle 7.2
 
 Before building and using the service JDK and Gradle must be installed and configured properly 
-(the configuration of java dns gradle is out of the scope of this instruction)
+(the configuration of java and gradle is out of the scope of this instruction)
 
 ### Build and test
 1. Chose directory: 
@@ -25,7 +56,7 @@ drone/
 2.1. For Windows:
 gradlew.bat build
 
-3. Unit-tests are done automatically withing the building. 
+3. Unit-tests are done automatically within the building. 
 If necessary, the tests can be run separately with the next command
 
 3.1. For Linux:
@@ -47,6 +78,53 @@ A Spring application must be started; If started successfully, the application l
 ... Tomcat started on port(s): 8080 (http) with context path ''
 ... Started DroneApplication in 3.334 seconds (process running for 3.887)
 
-### Demonstrate
-After a successful start the main feature of the service could be represented by the following commands. 
+### Demonstration
+After a successful start the main feature of the service could be represented by the following commands:
+
+- Register a drone:
+curl http://localhost:8080/register -X POST -H "Content-Type: application/json" -d @src/test/resources/json/drone_d4.json
+  (response: the drone with created droneId)
+
+- Check all registered drones:
+curl http://localhost:8080/list
+  (response: a list of drones, including the new one)
+
+- Try to make a load for drone#1 (droneId=1):
+curl http://localhost:8080/load?droneId=1 -X POST -H "Content-Type: application/json" -d @src/test/resources/json/load_1.json
+ (response: 400-BadRequest, 
+ with message: (droneId: 1, status: DELIVERING) The drone is not available!)
+
+- Check all drones available for loading:
+curl http://localhost:8080/available
+  (response: a list of drones, which state is IDLE or RETURNING)
+
+- Try to make the same load for drone#2 (droneId=2):
+curl http://localhost:8080/load?droneId=2 -X POST -H "Content-Type: application/json" -d @src/test/resources/json/load_1.json
+  (response: 400-BadRequest, 
+ with message: The load is to heavy for the drone: droneId: 2, weight_limit: 50, total load weight: 160)
+
+- Try to make the same load for drone#3 (droneId=3):
+curl http://localhost:8080/load?droneId=3 -X POST -H "Content-Type: application/json" -d @src/test/resources/json/load_2.json
+  (response: the load with created loadId)
+
+- Check drone#3 (droneId=3):
+  curl http://localhost:8080/drone_with_load?droneId=3
+  (response: drone info with the load)
+
+- Try to make another load for drone#3 (droneId=3):
+curl http://localhost:8080/load?droneId=3 -X POST -H "Content-Type: application/json" -d @src/test/resources/json/load_2.json
+  (response: 400-BadRequest,
+  with message: (droneId: 3, status: RETURNING) The drone Has already a load !)
+
+- Check drone#4 (droneId=4), created earlier:
+curl http://localhost:8080/drone_with_load?droneId=4
+  (response: drone info with load = null, since the drone has no load)
+
+- Check the battery of drone#4 (droneId=4):
+curl http://localhost:8080/battery_level?droneId=4
+  (response: integer value, the was value set when the drone was registered)
+
+## END
+Have you got any questions, feel free to ask 
+
 

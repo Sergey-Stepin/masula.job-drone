@@ -50,10 +50,10 @@ public class DroneController {
     }
 
     @PostMapping("/load")
-    public ResponseEntity<LoadDto> load(@RequestBody LoadDto dto){
+    public ResponseEntity<LoadDto> load(@PathParam("droneId") long droneId, @RequestBody LoadDto dto){
 
         Load load = LoadDto.fromDto(dto);
-        Load persistedLoad = droneService.load(dto.getDroneId(), load);
+        Load persistedLoad = droneService.load(droneId, load);
         LoadDto persistedDto = LoadDto.toDto(persistedLoad);
 
         return ResponseEntity.ok(persistedDto);

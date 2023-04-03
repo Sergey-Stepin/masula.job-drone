@@ -100,7 +100,7 @@ public class InvalidMedicineTest {
 
         LoadDto requestDto = LoadDto.toDto(load);
 
-        return mockMvc.perform(post("/load")
+        return mockMvc.perform(post("/load?droneId=" + requestDto.getDroneId())
                         .contentType("application/json")
                         .content(mapper.writeValueAsString(requestDto)))
                 .andExpect(status().isBadRequest())

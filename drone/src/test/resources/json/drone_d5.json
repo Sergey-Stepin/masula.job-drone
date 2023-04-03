@@ -2,6 +2,6 @@
 	"serialNumber":"ABC-5",
 	"model":"LIGHTWEIGHT",
 	"state": "LOADED",
-	"weightLimitGram":320,
-	"batteryLevel":95
+	"weightLimitGram":75,
+	"batteryLevel":32
 }
